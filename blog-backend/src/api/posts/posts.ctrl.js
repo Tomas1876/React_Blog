@@ -13,7 +13,7 @@ const { ObjectId } = mongoose.Types;
 //   }
 //   return next();
 // };
-export const getPostById = (ctx, next) => {
+export const getPostById = async (ctx, next) => {
   const { id } = ctx.params;
   if (!ObjectId.isValid(id)) {
     ctx.status = 400; // Bad Request
@@ -89,9 +89,16 @@ export const list = async ctx => {
     ctx.status = 400;
     return;
   }
-
+  const {tag,username} = ctx.query;
+  //tags, username 값이 유효하면 객체 안에 넣고 그렇지 않으면 넣지 않음
+  const query = {
+    ...(username?{'user.username' : username} : {}),
+    ...(tag ? {tags:tag}:{})
+  }
+  
   try {
-    const posts = await Post.find()
+    console.log(query)
+    const posts = await Post.find(query)
       //sort 함수의 파라미터는 {key:1} 형식으로 넣는데
       //1이면 오름차훈, -1이면 내림차순이다 최신순으로 보여주기 위해 내림차순 설정
       .sort({ _id: -1 })
@@ -104,7 +111,7 @@ export const list = async ctx => {
       .exec();
 
     //커스텀 헤더를 사용해 마지막 페이지 알려주기
-    const postCount = await Post.countDocuments().exec();
+    const postCount = await Post.countDocuments(query).exec();
     ctx.set('Last-Page', Math.ceil(postCount / 10));
     //본문 내용 200자 이상이면 자르기
     ctx.body = posts.map(post => ({
