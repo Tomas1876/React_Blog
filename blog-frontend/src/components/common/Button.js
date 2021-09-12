@@ -21,7 +21,7 @@ ${props => props.fullWidth && css`
                                 padding-bottom:0.75rem;
                                 width:100%;
                                 font-size:1.125rem
-                                `}
+                                `};
 ${props => props.cyan && css`
                           background:${palette.cyan[5]};
                           &:hover{

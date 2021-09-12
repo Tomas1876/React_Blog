@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import palette from '../../lib/styles/palette';
 import Button from '../common/Button';
 
 /* 회원가입 또는 로그인 폼 */
- const AuthFormBlock = styled.div` //최상위 요소에는 Block이라는 단어를 붙일 것
+const AuthFormBlock = styled.div` //최상위 요소에는 Block이라는 단어를 붙일 것
  h3 {
    margin: 0;
    color: ${palette.gray[8]};
@@ -53,39 +53,43 @@ const ErrorMessage = styled.div`
  text-align: center;
  font-size: 0.875rem;
  margin-top: 1rem;
-`; 
+`;
 
 /* 타입에 따라 회원가입인지 로그인인지 분별해 문구 등을 바꿔준다 */
 const textMap = {
-    login: '로그인',
-    register: '회원가입'
-   };
+  login: '로그인',
+  register: '회원가입'
+};
 
-const AuthForm = ({type}) =>{
-    const text = textMap[type];
-    return(
-        <AuthFormBlock>
-            <h3>{text}</h3>
-            <form>
-                <StyledInput autoComplete='username' name='username' placeholder='아이디' />
-                <StyledInput autoComplete='new-password'
-                             name='password'
-                             placeholder='비밀번호'
-                             type='password' />
-                { type === 'register' && (
-                    <StyledInput autoComplete='new-password'
-                    name='passwordConfirm'
-                    placeholder='비밀번호 확인'
-                    type='password' />
-                )}
-                <ButtonWithMarginTop cyan fullWidth>{text}</ButtonWithMarginTop> {/* cyan={true} fullWidth={true} 와 같은 의미*/}
-            </form>
-            <Footer>
-                { type === 'login' ? (<Link to='/register'>회원가입</Link>) : (<Link to='/login'>로그인</Link>)}
-                
-            </Footer>
-        </AuthFormBlock>
-    );
+const AuthForm = ({ type, form, onChange, onSubmit }) => {
+  const text = textMap[type];
+  return (
+    <AuthFormBlock>
+      <h3>{text}</h3>
+      <form onSubmit={onSubmit}>
+        <StyledInput autoComplete='username' name='username' placeholder='아이디' onChange={onChange} value={form.username} />
+        <StyledInput autoComplete='new-password'
+          name='password'
+          placeholder='비밀번호'
+          type='password'
+          onChange={onChange}
+          value={form.password} />
+        {type === 'register' && (
+          <StyledInput autoComplete='new-password'
+            name='passwordConfirm'
+            placeholder='비밀번호 확인'
+            type='password'
+            onChange={onChange}
+            value={form.passwordConfirm} />
+        )}
+        <ButtonWithMarginTop cyan fullWidth>{text}</ButtonWithMarginTop> {/* cyan={true} fullWidth={true} 와 같은 의미*/}
+      </form>
+      <Footer>
+        {type === 'login' ? (<Link to='/register'>회원가입</Link>) : (<Link to='/login'>로그인</Link>)}
+
+      </Footer>
+    </AuthFormBlock>
+  );
 }
 
 export default AuthForm;
