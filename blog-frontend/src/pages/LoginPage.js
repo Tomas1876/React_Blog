@@ -1,10 +1,10 @@
 import AuthTemplate from "../components/auth/AuthTemplate";
 import LoginForm from "../containers/auth/LoginForm";
 
-const LoginPage = ()=>{
+const LoginPage = () => {
     return <AuthTemplate>
-                <LoginForm type='login' />
-            </AuthTemplate>
+        <LoginForm type='login' />
+    </AuthTemplate>
 }
 
 export default LoginPage;

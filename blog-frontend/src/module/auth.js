@@ -27,6 +27,7 @@ export const login = createAction(LOGIN, ({ username, password }) => ({ username
 const registerSaga = createRequestSaga(REGISTER, authAPI.register);
 const loginSaga = createRequestSaga(LOGIN, authAPI.login);
 export function* authSaga() {
+    //takeLatest는 요청을 두 번 할 경우 가장 최신의 요청만을 처리해준다
     yield takeLatest(REGISTER, registerSaga);
     yield takeLatest(LOGIN, loginSaga);
 }

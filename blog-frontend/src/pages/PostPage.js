@@ -1,4 +1,4 @@
-const PostPage = ()=>{
+const PostPage = () => {
     return <div>PostPage</div>
 }
 

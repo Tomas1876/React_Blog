@@ -1,4 +1,4 @@
-const WritePage = ()=>{
+const WritePage = () => {
     return <div>WritePage</div>
 }
 
