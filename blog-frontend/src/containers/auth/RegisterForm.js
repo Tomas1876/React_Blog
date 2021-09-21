@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, initializeForm, register } from '../../module/auth';
 import AuthForm from '../../components/auth/AuthForm';
@@ -8,6 +8,8 @@ import { check } from '../../module/user';
 import { withRouter } from 'react-router-dom';
 
 const RegisterForm = ({ history }) => {
+    const [error, setError] = useState(null);
+
     //생성한 action을 useDispatch를 통해 발생시킬 수 있다
     const dispatch = useDispatch();
     const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
@@ -27,8 +29,16 @@ const RegisterForm = ({ history }) => {
     const onSubmit = e => {
         e.preventDefault();
         const { username, password, passwordConfirm } = form;
+        //하나라도 비어 있다면
+        if ([username, password, passwordConfirm].includes('')) {
+            setError('빈 칸을 모두 채워주세요');
+            return
+        }
+        //비밀번호가 일치하지 않는다면
         if (password != passwordConfirm) {
-            // 오류처리 해야 함
+            setError('비밀번호가 일치하지 않습니다');
+            dispatch(changeField({ form: 'register', key: 'password', vlaue: '' }));
+            dispatch(changeField({ form: 'register', key: 'passwordConform', vlaue: '' }));
             return;
         }
         dispatch(register({ username, password }));
@@ -44,8 +54,14 @@ const RegisterForm = ({ history }) => {
     //auth, authError 중 어떤 값이 유효한지에 따라 다른 작업 수행
     useEffect(() => {
         if (authError) {
-            console.log('오류발생')
-            console.log(authError)
+            //계정명이 이미 존재할 때
+            if (authError.response.status === 409) {
+                setError('사용할 수 없는 아이디입니다');
+                return
+            }
+            //그 외
+            setError('회원가입에 실패했습니다');
+            return
         }
         if (auth) {
             console.log('회원가입 성공')
@@ -65,7 +81,8 @@ const RegisterForm = ({ history }) => {
         <AuthForm type='register'
             form={form}
             onChange={onChange}
-            onSubmit={onSubmit} />
+            onSubmit={onSubmit}
+            error={error} />
     );
 
 }
