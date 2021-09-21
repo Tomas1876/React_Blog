@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { changeField, initializeForm, login } from '../../module/auth';
@@ -6,6 +6,9 @@ import AuthForm from '../../components/auth/AuthForm';
 import { check } from '../../module/user'
 
 const LoginForm = ({ history }) => {
+
+    const [error, setError] = useState(null)
+
     //생성한 action을 useDispatch를 통해 발생시킬 수 있다
     const dispatch = useDispatch();
     const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
@@ -37,6 +40,7 @@ const LoginForm = ({ history }) => {
         if (authError) {
             console.log('로그인 오류 발생');
             console.log(authError);
+            setError('로그인 실패')
             return
         }
         if (auth) {
@@ -46,7 +50,7 @@ const LoginForm = ({ history }) => {
     }, [auth, authError, dispatch]);
     useEffect(() => {
         if (user) {
-            history.puah('/');
+            history.push('/');
         }
     }, [history, user]);
 
@@ -54,7 +58,8 @@ const LoginForm = ({ history }) => {
         <AuthForm type='login'
             form={form}
             onChange={onChange}
-            onSubmit={onSubmit} />
+            onSubmit={onSubmit}
+            error={error} />
     );
 
 }

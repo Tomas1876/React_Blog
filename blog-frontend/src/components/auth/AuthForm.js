@@ -61,7 +61,7 @@ const textMap = {
   register: '회원가입'
 };
 
-const AuthForm = ({ type, form, onChange, onSubmit }) => {
+const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
   const text = textMap[type];
   return (
     <AuthFormBlock>
@@ -82,6 +82,7 @@ const AuthForm = ({ type, form, onChange, onSubmit }) => {
             onChange={onChange}
             value={form.passwordConfirm} />
         )}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <ButtonWithMarginTop cyan fullWidth>{text}</ButtonWithMarginTop> {/* cyan={true} fullWidth={true} 와 같은 의미*/}
       </form>
       <Footer>
