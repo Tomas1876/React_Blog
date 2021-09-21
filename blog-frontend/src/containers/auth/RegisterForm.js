@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeField, initializeForm, register } from '../../module/auth';
 import AuthForm from '../../components/auth/AuthForm';
 import { check } from '../../module/user';
+
+//history를 사용하기 위해 필요한 객체
 import { withRouter } from 'react-router-dom';
 
 const RegisterForm = ({ history }) => {
