@@ -74,6 +74,12 @@ const RegisterForm = ({ history }) => {
         if (user) {
             console.log('check API 성공');
             history.push('/'); //회원가입 후 홈 화면으로 이동
+            // localStorage를 이용해 로그인 유지
+            try {
+                localStorage.setItem('user', JSON.stringify(user))
+            } catch (error) {
+                console.log('localStorage is not working')
+            }
         }
     }, [user])
 
